@@ -1,5 +1,12 @@
 # Implementation Guide - Coffee Shop Application
 
+## 📁 Project Structure
+
+The project is organized into two main folders:
+
+- **`backend/`** - Spring Boot REST API
+- **`frontend/`** - Angular micro frontends (Nx workspace)
+
 ## 📚 Progress Tracker
 
 - ✅ **Lesson 1**: Understanding Spring Boot Architecture
@@ -24,7 +31,7 @@ You've successfully created the `Coffee` entity class with:
 - ✅ Parameterized constructor
 - ✅ All getters and setters
 
-**Location**: `src/main/java/com/example/store/entity/Coffee.java`
+**Location**: `backend/src/main/java/com/example/store/entity/Coffee.java`
 
 **What you learned**:
 
@@ -46,7 +53,7 @@ You've successfully created the `CoffeeRepository` interface with:
 - ✅ Extends `JpaRepository<Coffee, Long>`
 - ✅ Proper interface declaration
 
-**Location**: `src/main/java/com/example/store/repository/CoffeeRepository.java`
+**Location**: `backend/src/main/java/com/example/store/repository/CoffeeRepository.java`
 
 **What you learned**:
 
@@ -70,7 +77,7 @@ You've successfully created the `CoffeeService` class with:
 - ✅ Error handling for missing coffees
 - ✅ Update logic correctly updates all fields
 
-**Location**: `src/main/java/com/example/store/service/CoffeeService.java`
+**Location**: `backend/src/main/java/com/example/store/service/CoffeeService.java`
 
 **What you learned**:
 
@@ -96,8 +103,8 @@ You've successfully created both DTO records:
 
 **Locations**:
 
-- `src/main/java/com/example/store/dto/CoffeeRequest.java`
-- `src/main/java/com/example/store/dto/CoffeeResponse.java`
+- `backend/src/main/java/com/example/store/dto/CoffeeRequest.java`
+- `backend/src/main/java/com/example/store/dto/CoffeeResponse.java`
 
 **What you learned**:
 
@@ -119,7 +126,7 @@ You've implemented the `CoffeeController` with:
 - ✅ Clean DTO ↔ Entity conversion helpers
 - ✅ All CRUD endpoints mapped
 
-**Location**: `src/main/java/com/example/store/controller/CoffeeController.java`
+**Location**: `backend/src/main/java/com/example/store/controller/CoffeeController.java`
 
 **What you learned**:
 
@@ -131,53 +138,65 @@ You've implemented the `CoffeeController` with:
 
 ## 🔄 Current Task: Angular Frontend Setup
 
-Now let's scaffold the Angular app and prepare it to talk to the backend.
+Now let's create a standard Angular application in the `frontend/` folder.
 
 ### 📋 Task Instructions
 
-1. Create a new Angular app (latest):
+1. **Create Angular application in the frontend folder**:
 
-   - Run:
-     - Windows PowerShell or Bash:
-       - `npm i -g @angular/cli`
-       - `ng new coffee-shop-ui --routing --style=scss`
-       - `cd coffee-shop-ui`
-       - `ng serve`
-   - App runs at http://localhost:4200
+   ```bash
+   cd frontend
+   npx ng new coffee-shop-ui --routing --style=scss
+   ```
 
-2. Add a proxy for the Spring Boot API to avoid CORS during dev:
+   - Choose your preferred options (standalone components, etc.)
+   - This will create the Angular app in `frontend/coffee-shop-ui/`
 
-   - Create `proxy.conf.json` in the Angular project root with:
+2. **Add proxy configuration** for Spring Boot API:
+
+   - Create `frontend/coffee-shop-ui/proxy.conf.json`:
+     ```json
      {
-     "/api": {
-     "target": "http://localhost:8080",
-     "secure": false,
-     "changeOrigin": true
+       "/api": {
+         "target": "http://localhost:8080",
+         "secure": false,
+         "changeOrigin": true
+       }
      }
-     }
-   - Update the serve options:
-     - In `angular.json`, under `projects.coffee-shop-ui.architect.serve.options`, add:
+     ```
+   - Update `frontend/coffee-shop-ui/angular.json`:
+     - In `projects.coffee-shop-ui.architect.serve.options`, add:
+       ```json
        "proxyConfig": "proxy.conf.json"
-   - Start dev server with proxy: `ng serve`
+       ```
 
-3. Generate a Coffees feature:
+3. **Generate Coffees feature**:
 
-   - `ng g c features/coffees/coffees-list`
-   - `ng g s features/coffees/coffees`
+   ```bash
+   cd coffee-shop-ui
+   ng g c features/coffees/coffees-list
+   ng g s features/coffees/coffees
+   ```
 
-4. In the service, call the API via proxy (`/api/coffees`).
+4. **Start the application**:
+   ```bash
+   ng serve
+   ```
+   - App runs at http://localhost:4200
 
 ### 🎓 Learning Points
 
-- Angular CLI scaffolding and dev server
-- Using a dev proxy to call Spring Boot without CORS
-- Organizing features (component + service)
+- **Angular CLI**: Standard tool for creating and managing Angular applications
+- **Proxy Configuration**: Avoids CORS issues during development
+- **Component & Service Generators**: Angular CLI commands to scaffold code
+- **Feature Organization**: Organizing code by feature (coffees, orders, etc.)
 
 ### ✅ Check Your Work
 
-- App serves on port 4200
-- Hitting `/api/coffees` from Angular succeeds without CORS errors
-- You can render a simple list from the API response
+- Angular app created in `frontend/coffee-shop-ui/` folder
+- App runs on port 4200
+- Proxy configured to forward `/api` requests to Spring Boot (port 8080)
+- Can make API calls from Angular without CORS errors
 
 **Controllers** are like **cashier counters**:
 
@@ -192,7 +211,7 @@ Create a `CoffeeController` **class** that handles HTTP requests and converts be
 
 ### ✅ Requirements
 
-1. **Location**: Create the file at: `src/main/java/com/example/store/controller/CoffeeController.java`
+1. **Location**: Create the file at: `backend/src/main/java/com/example/store/controller/CoffeeController.java`
 
 2. **Key Points**:
 
